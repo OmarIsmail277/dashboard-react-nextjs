@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import supabase from "@/lib/supabaseClient";
-import { userRepoistory } from "@/repositories/userRepository";
+import { userRepository } from "@/repositories/userRepository";
 import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
@@ -16,16 +16,18 @@ export default function LoginPage() {
   } = useForm();
 
   const [errorMsg, setErrorMsg] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data) => {
-    setErrorMsg("");
-
     try {
-      const res = await userRepoistory.loginUser(data);
-      console.log("✅ Logged in:", res);
+      setLoading(true);
+      setErrorMsg("");
+      const res = await userRepository.loginUser(data);
       router.push("/dashboard");
     } catch (err) {
       setErrorMsg(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -103,9 +105,12 @@ export default function LoginPage() {
 
         <button
           type="submit"
-          className="cursor-pointer w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+          disabled={loading}
+          className="w-full bg-blue-600 text-white py-2 rounded-md transition
+             hover:bg-blue-700 cursor-pointer
+             disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          Sign In
+          {loading ? "Signing in..." : "Sign In"}
         </button>
       </form>
     </div>
