@@ -2,8 +2,13 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import supabase from "@/lib/supabaseClient";
+import { userRepoistory } from "@/repositories/userRepository";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -12,9 +17,16 @@ export default function LoginPage() {
 
   const [errorMsg, setErrorMsg] = useState("");
 
-  const onSubmit = (data) => {
-    console.log("Form data:", data);
-    // Add Login Logic here
+  const onSubmit = async (data) => {
+    setErrorMsg("");
+
+    try {
+      const res = await userRepoistory.loginUser(data);
+      console.log("✅ Logged in:", res);
+      router.push("/dashboard");
+    } catch (err) {
+      setErrorMsg(err.message);
+    }
   };
 
   return (
