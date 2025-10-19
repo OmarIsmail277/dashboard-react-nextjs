@@ -2,12 +2,15 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import supabase from "@/lib/supabaseClient";
+// import supabase from "@/lib/supabaseClient";
 import { userRepository } from "@/repositories/userRepository";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/store/userSlice";
 
 export default function LoginPage() {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -22,10 +25,16 @@ export default function LoginPage() {
     try {
       setLoading(true);
       setErrorMsg("");
+      // login user via Supabase
       const res = await userRepository.loginUser(data);
+      if (res?.user) {
+        // 👇 Save user to Redux
+        dispatch(setUser(res.user));
+      }
+      // Redirect to dashboard after login
       router.push("/dashboard");
     } catch (err) {
-      setErrorMsg(err.message);
+      setErrorMsg(err.message || "Login Failed");
     } finally {
       setLoading(false);
     }
