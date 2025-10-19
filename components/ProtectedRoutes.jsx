@@ -9,7 +9,6 @@ import { setUser, clearUser } from "@/store/userSlice";
 export default function ProtectedRoute({ children }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [authenticated, setAuthenticated] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -19,7 +18,6 @@ export default function ProtectedRoute({ children }) {
         dispatch(clearUser());
         router.replace("/login");
       } else {
-        // setAuthenticated(true);
         dispatch(setUser(data.user));
       }
       setLoading(false);
@@ -34,8 +32,6 @@ export default function ProtectedRoute({ children }) {
       </div>
     );
   }
-
-  //   if (!authenticated) return null;
 
   return children;
 }

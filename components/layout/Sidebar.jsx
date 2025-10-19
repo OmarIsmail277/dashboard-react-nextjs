@@ -13,7 +13,6 @@ export default function Sidebar({ isOpen, setIsOpen }) {
     { name: "Charts", path: "/dashboard/charts", src: "/charts.svg" },
   ];
 
-  // Disable body scroll when sidebar is open on mobile
   useEffect(() => {
     if (isOpen && window.innerWidth < 768) {
       document.body.style.overflow = "hidden";
@@ -24,7 +23,6 @@ export default function Sidebar({ isOpen, setIsOpen }) {
 
   return (
     <>
-      {/* BACKDROP for mobile */}
       {isOpen && (
         <motion.div
           className="fixed inset-0 bg-black/40 md:hidden z-40"
@@ -35,14 +33,12 @@ export default function Sidebar({ isOpen, setIsOpen }) {
         />
       )}
 
-      {/* SIDEBAR */}
       <motion.aside
         animate={{ x: isOpen ? 0 : -260, width: isOpen ? 240 : 0 }}
         transition={{ duration: 0.3, type: "tween" }}
         className="bg-white shadow-md p-4 flex flex-col justify-between min-h-screen fixed md:relative z-50 md:w-[90px]"
       >
         <div className="flex flex-col">
-          {/* Toggle button */}
           <div className="flex items-center mb-6">
             <button
               className="cursor-pointer rounded-full p-3 hover:bg-gray-100 transition"
@@ -52,7 +48,6 @@ export default function Sidebar({ isOpen, setIsOpen }) {
             </button>
           </div>
 
-          {/* Navigation Links */}
           <nav className="flex flex-col gap-3 w-full items-center">
             {links.map((link) => (
               <Link
@@ -65,7 +60,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                     ? "bg-gray-300 text-white"
                     : "text-gray-700 hover:bg-gray-200"
                 }`}
-                onClick={() => window.innerWidth < 768 && setIsOpen(false)} // close on mobile
+                onClick={() => window.innerWidth < 768 && setIsOpen(false)}
               >
                 <img
                   src={link.src}
