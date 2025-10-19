@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-// import supabase from "@/lib/supabaseClient";
 import { userRepository } from "@/repositories/userRepository";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
@@ -25,13 +24,10 @@ export default function LoginPage() {
     try {
       setLoading(true);
       setErrorMsg("");
-      // login user via Supabase
       const res = await userRepository.loginUser(data);
       if (res?.user) {
-        // 👇 Save user to Redux
         dispatch(setUser(res.user));
       }
-      // Redirect to dashboard after login
       router.push("/dashboard");
     } catch (err) {
       setErrorMsg(err.message || "Login Failed");
@@ -50,7 +46,6 @@ export default function LoginPage() {
           Login
         </h2>
 
-        {/* Email */}
         <div className="mb-4">
           <label htmlFor="email" className="block text-gray-700 mb-2">
             Email
@@ -78,7 +73,6 @@ export default function LoginPage() {
           )}
         </div>
 
-        {/* Password */}
         <div className="mb-4">
           <label htmlFor="password" className="block text-gray-700 mb-2">
             Password

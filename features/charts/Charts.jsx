@@ -43,7 +43,6 @@ export default function Charts() {
 
   if (!products.length) return <p>Loading charts...</p>;
 
-  // === PIE CHART ===
   const categoryData = Object.values(
     products.reduce((acc, p) => {
       if (!acc[p.category]) acc[p.category] = { name: p.category, value: 0 };
@@ -52,7 +51,6 @@ export default function Charts() {
     }, {})
   );
 
-  // === BAR CHART === (Average price per category)
   const barData = Object.values(
     products.reduce((acc, p) => {
       if (!acc[p.category])
@@ -66,7 +64,6 @@ export default function Charts() {
     avgPrice: +(d.total / d.count).toFixed(2),
   }));
 
-  // === LINE CHART === (Products count over time)
   const lineData = Object.values(
     products.reduce((acc, p) => {
       const date = new Date(p.date_added).toLocaleDateString("en-GB");
@@ -78,7 +75,6 @@ export default function Charts() {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-      {/* PIE CHART */}
       <div className="p-6 rounded-2xl bg-zinc-900 shadow-md">
         <h3 className="text-xl mb-4 text-white text-center">
           Products by Category
@@ -104,7 +100,6 @@ export default function Charts() {
         </ResponsiveContainer>
       </div>
 
-      {/* BAR CHART */}
       <div className="p-6 rounded-2xl bg-zinc-900 shadow-md">
         <h3 className="text-xl mb-4 text-white text-center">
           Average Price per Category
@@ -127,7 +122,6 @@ export default function Charts() {
         </ResponsiveContainer>
       </div>
 
-      {/* LINE CHART */}
       <div className="p-6 rounded-2xl bg-zinc-900 shadow-md md:col-span-2">
         <h3 className="text-xl mb-4 text-white text-center">
           Products Added Over Time

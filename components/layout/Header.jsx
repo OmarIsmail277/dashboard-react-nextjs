@@ -12,9 +12,9 @@ export default function Header({ toggleSidebar, isSidebarOpen }) {
   const dispatch = useDispatch();
 
   const handleLogout = async () => {
-    await userRepository.logoutUser(); // clears session in Supabase
-    dispatch(clearUser()); // clears user from Redux
-    router.push("/"); // redirect home
+    await userRepository.logoutUser();
+    dispatch(clearUser());
+    router.push("/");
   };
 
   const username = user?.email ? user.email.split("@")[0] : "User";
@@ -22,7 +22,6 @@ export default function Header({ toggleSidebar, isSidebarOpen }) {
   return (
     <header className="bg-white shadow-sm px-6 py-3 flex justify-between items-center w-full">
       <div className="flex items-center gap-4">
-        {/* Show burger only when sidebar is closed */}
         {!isSidebarOpen && (
           <button
             onClick={toggleSidebar}
