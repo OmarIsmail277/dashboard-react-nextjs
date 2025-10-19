@@ -18,9 +18,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
       transition={{ duration: 0.3, type: "tween" }}
       className="bg-white shadow-md p-4 flex flex-col justify-between min-h-screen"
     >
-      {/* Header Section */}
       <div>
-        {/* Burger Button always visible */}
         <div className="flex items-center mb-6">
           <button
             className="cursor-pointer rounded-full p-4 hover:bg-gray-100 transition"
@@ -33,7 +31,6 @@ export default function Sidebar({ isOpen, setIsOpen }) {
             />
           </button>
 
-          {/* Show Logo + Text only when open */}
           {isOpen && (
             <div className="flex items-center gap-2 ml-2">
               <img
@@ -48,7 +45,6 @@ export default function Sidebar({ isOpen, setIsOpen }) {
           )}
         </div>
 
-        {/* Navigation Links */}
         <nav className="flex flex-col gap-2">
           {links.map((link) => (
             <Link
