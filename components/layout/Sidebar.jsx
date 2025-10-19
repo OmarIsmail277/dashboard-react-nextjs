@@ -56,8 +56,8 @@ export default function Sidebar({ isOpen, setIsOpen }) {
               href={link.path}
               className={`flex items-center gap-3 px-4 py-2 rounded-md font-medium transition-all duration-300 ${
                 pathname === link.path
-                  ? "bg-blue-600 text-white"
-                  : "text-gray-700 hover:bg-gray-200"
+                  ? "bg-gray-300 text-white"
+                  : "text-gray-700 hover:bg-gray-300"
               }`}
             >
               <img
