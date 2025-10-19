@@ -16,6 +16,10 @@ import {
 import { columns, renderCell } from "../../../app/dashboard/tables/columns";
 import { SearchIcon } from "../../../components/icons";
 
+import * as XLSX from "xlsx";
+import { jsPDF } from "jspdf";
+import { autoTable } from "jspdf-autotable";
+
 export default function DataTable({ products }) {
   const [filterValue, setFilterValue] = useState("");
   const hasSearchFilter = Boolean(filterValue);
@@ -72,6 +76,52 @@ export default function DataTable({ products }) {
     setPage(1);
   }, []);
 
+  const exportToExcel = () => {
+    const data = filteredItems.map((row) => {
+      const obj = {};
+      columns.forEach((col) => {
+        if (col.key === "date_added") {
+          obj[col.label] = new Date(row[col.key]).toLocaleDateString();
+        } else {
+          obj[col.label] = row[col.key];
+        }
+      });
+      return obj;
+    });
+
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Products");
+    XLSX.writeFile(workbook, "products.xlsx");
+  };
+
+  const exportToPDF = () => {
+    const doc = new jsPDF();
+
+    const headers = [["ID", ...columns.map((col) => col.label)]];
+
+    const rows = filteredItems.map((row) => [
+      row.id,
+      ...columns.map((col) =>
+        col.key === "date_added"
+          ? new Date(row[col.key]).toLocaleDateString()
+          : row[col.key]
+      ),
+    ]);
+
+    autoTable(doc, {
+      head: headers,
+      body: rows,
+      startY: 10,
+      styles: { fontSize: 9 },
+      columnStyles: {
+        0: { cellWidth: 15 },
+      },
+    });
+
+    doc.save("products.pdf");
+  };
+
   const topContent = useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
@@ -85,6 +135,21 @@ export default function DataTable({ products }) {
             onClear={onClear}
             onValueChange={onSearchChange}
           />
+
+          <div className="flex gap-2">
+            <button
+              onClick={exportToExcel}
+              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              Export XLSX
+            </button>
+            <button
+              onClick={exportToPDF}
+              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+            >
+              Export PDF
+            </button>
+          </div>
         </div>
       </div>
     );
