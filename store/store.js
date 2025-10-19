@@ -1,14 +1,8 @@
-import { configureStore, createSlice } from "@reduxjs/toolkit";
-
-// Slice مبدئي لتجربة الـ store
-const dummySlice = createSlice({
-  name: "dummy",
-  initialState: { value: "Redux store working ✅" },
-  reducers: {},
-});
+import { configureStore } from "@reduxjs/toolkit";
+import userReducer from "./userSlice";
 
 export const store = configureStore({
   reducer: {
-    dummy: dummySlice.reducer,
+    user: userReducer,
   },
 });

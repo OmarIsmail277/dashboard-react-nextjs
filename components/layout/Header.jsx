@@ -3,25 +3,20 @@
 import { useRouter } from "next/navigation";
 import { userRepository } from "@/repositories/userRepository";
 import supabase from "@/lib/supabaseClient";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Image from "next/image";
+import { useSelector, useDispatch } from "react-redux";
+import { clearUser } from "@/store/userSlice";
 
 export default function Header({ toggleSidebar }) {
   const router = useRouter();
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    // Get current user from Supabase
-    const fetchUser = async () => {
-      const { data } = await supabase.auth.getUser();
-      setUser(data?.user || null);
-    };
-    fetchUser();
-  }, []);
+  const user = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
 
   const handleLogout = async () => {
-    await userRepository.logoutUser();
-    router.push("/");
+    await userRepository.logoutUser(); // clears session in Supabase
+    dispatch(clearUser()); // clears user from Redux
+    router.push("/"); // redirect home
   };
 
   const username = user?.email ? user.email.split("@")[0] : "User";

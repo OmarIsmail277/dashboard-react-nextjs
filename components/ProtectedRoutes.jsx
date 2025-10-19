@@ -3,25 +3,29 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import supabase from "@/lib/supabaseClient";
+import { useDispatch } from "react-redux";
+import { setUser, clearUser } from "@/store/userSlice";
 
 export default function ProtectedRoute({ children }) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const checkUser = async () => {
       const { data, error } = await supabase.auth.getUser();
       if (error || !data.user) {
+        dispatch(clearUser());
         router.replace("/login");
       } else {
-        setAuthenticated(true);
+        // setAuthenticated(true);
+        dispatch(setUser(data.user));
       }
       setLoading(false);
     };
-
     checkUser();
-  }, [router]);
+  }, [router, dispatch]);
 
   if (loading) {
     return (
@@ -31,7 +35,7 @@ export default function ProtectedRoute({ children }) {
     );
   }
 
-  if (!authenticated) return null;
+  //   if (!authenticated) return null;
 
   return children;
 }
