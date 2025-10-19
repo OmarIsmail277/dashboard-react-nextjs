@@ -1,6 +1,3 @@
-import { Tooltip } from "@heroui/react";
-import { DeleteIcon, EditIcon, EyeIcon } from "../../../components/icons";
-
 export const columns = [
   { key: "name", label: "Name" },
   { key: "category", label: "Category" },

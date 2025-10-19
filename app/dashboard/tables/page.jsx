@@ -1,18 +1,5 @@
 import DataTable from "@/features/table/components/DataTable";
-import supabase from "@/lib/supabaseClient";
-
-async function getProducts() {
-  const { data, error } = await supabase
-    .from("products")
-    .select("*")
-    .order("date_added", { ascending: false });
-
-  if (error) {
-    console.error("Error fetching products:", error.message);
-    return [];
-  }
-  return data;
-}
+import { getProducts } from "@/repositories/productRepository";
 
 export default async function ProductsPage() {
   const products = await getProducts();
@@ -20,8 +7,7 @@ export default async function ProductsPage() {
   return (
     <section className="py-24">
       <div className="container">
-        <DataTable products={products} />{" "}
-        {/* لاحظ أننا نعيد استخدام نفس الكومبوننت */}
+        <DataTable products={products} />
       </div>
     </section>
   );
